@@ -4,8 +4,8 @@
     async function init() {
         const status = document.getElementById('result');
         try {
-            const erzyaSci = await fetchCSV('/data/erzya_science.csv');
-            const mokshaSci = await fetchCSV('/data/moksha_science.csv');
+            const erzyaSci = await fetchCSV('data/erzya_science.csv');
+            const mokshaSci = await fetchCSV('data/moksha_science.csv');
             const X = [...erzyaSci.coords, ...mokshaSci.coords];
             const y = [...Array(erzyaSci.coords.length).fill(0), ...Array(mokshaSci.coords.length).fill(1)];
             ldaModel = new LDA(X, y);
