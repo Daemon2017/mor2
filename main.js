@@ -35,24 +35,28 @@
         }
         const proj = ldaModel.project([coords]);
         const pred = ldaModel.predict([coords]);
-        const label = pred[0] === 0 ? "Эрзя" : "Мокша";
+        const isErzya = pred[0] === 0;
+        const label = isErzya ? "Эрзя" : "Мокша";
+        const userColor = isErzya ? 'rgba(0, 50, 255, 1)' : 'rgba(255, 0, 0, 1)';
         mainTraces.push({
             x: [proj[0]],
-            y: [0.1],
-            mode: 'markers+text',
+            y: [(Math.random() - 0.5) * 0.5],
+            mode: 'markers',
             name: `User: ${name}`,
+            showlegend: false,
             text: [name],
-            hovertemplate: '<b>%{text}</b><extra></extra>',
-            textposition: 'top center',
+            hovertemplate: '<b>%{text}</b><br>Класс: ' + label + '<extra></extra>',
             marker: {
-                color: 'black',
+                color: userColor,
                 size: 14,
-                symbol: 'star'
+                symbol: 'star',
+                line: { color: 'black', width: 1 }
             }
         });
         updateGraph();
         document.getElementById('result').innerText = `📊 Результат: ${name} классифицирован как ${label}`;
     }
+
     async function fetchCSV(url) {
         const res = await fetch(url);
         if (!res.ok) throw new Error();
@@ -66,6 +70,7 @@
             coords: parsed.map(r => r.slice(1))
         };
     }
+
     async function tryAddServerUserFile(url, name, color) {
         try {
             const data = await fetchCSV(url);
@@ -93,35 +98,27 @@
     function updateGraph() {
         const allX = mainTraces.flatMap(t => t.x);
         const maxVal = Math.max(...allX.map(Math.abs));
-        const rangeVal = maxVal * 1.10;
+        const rangeVal = maxVal * 1.15;
+
         const layout = {
-            title: 'Генетическая граница: Эрзя (слева) vs Мокша (справа)',
+            title: 'Генетическая граница: Эрзя vs Мокша',
             xaxis: {
-                title: 'Смещение относительно границы (LD1)',
+                title: 'LD1',
                 range: [-rangeVal, rangeVal],
-                zeroline: true,
-                zerolinecolor: '#000',
-                zerolinewidth: 2,
-                gridcolor: '#eee'
+                zeroline: true
             },
             yaxis: {
                 showticklabels: false,
-                range: [-0.3, 0.3],
-                fixedrange: true,
-                zeroline: true,
-                zerolinecolor: '#ccc'
+                range: [-0.4, 0.4],
+                fixedrange: true
             },
+            showlegend: true,
             legend: {
                 orientation: 'h',
-                yanchor: 'center',
-                y: -0.2,
-                xanchor: 'center',
-                x: 0.75
+                y: -0.2
             },
-            hovermode: 'closest',
-            plot_bgcolor: '#fff',
-            paper_bgcolor: '#fff',
-            margin: { t: 80, b: 80, l: 50, r: 50 }
+            margin: { t: 50, b: 100, l: 50, r: 50 },
+            hovermode: 'closest'
         };
 
         Plotly.newPlot('graph', mainTraces, layout, { responsive: true });
