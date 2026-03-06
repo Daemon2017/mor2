@@ -13,8 +13,8 @@
                 createTrace(ldaModel.project(erzyaSci.coords), erzyaSci.names, 'Эрзя (Science)', 'rgba(0, 50, 255, 1)', 10, 'diamond'),
                 createTrace(ldaModel.project(mokshaSci.coords), mokshaSci.names, 'Мокша (Science)', 'rgba(255, 0, 0, 1)', 10, 'diamond')
             ];
-            await tryAddServerUserFile('/data/erzya_custom.csv', 'Эрзя (Custom)', 'rgba(0, 80, 255, 0.2)');
-            await tryAddServerUserFile('/data/moksha_custom.csv', 'Мокша (Custom)', 'rgba(255, 50, 50, 0.2)');
+            await tryAddServerUserFile('data/erzya_custom.csv', 'Эрзя (Custom)', 'rgba(0, 80, 255, 0.2)');
+            await tryAddServerUserFile('data/moksha_custom.csv', 'Мокша (Custom)', 'rgba(255, 50, 50, 0.2)');
             updateGraph();
             status.innerText = "✅ Файлы с эталонами успешнно загружены.";
         } catch (err) {
