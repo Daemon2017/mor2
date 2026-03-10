@@ -1,6 +1,7 @@
 joblib~=1.4.2
 numpy~=1.23.5
 Flask~=2.3.2
+flask-cors~=4.0.0
 waitress~=2.1.2
 pandas~=1.5.3
 scikit-learn~=1.6.1
