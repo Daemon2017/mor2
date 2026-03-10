@@ -3,18 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Mor2</title>
-    <script src="libs/papaparse.min.js"></script>
     <script src="libs/plotly.min.js"></script>
-    <script src="lda.js"></script>
-    <script src="main.js"></script>
+    <script src="js/main.js"></script>
     <style>
-        body { font-family: sans-serif; margin: 20px; background: #f4f4f9; color: #333; }
+        body { font-family: -apple-system, sans-serif; margin: 20px; background: #f4f4f9; color: #333; }
         .container { max-width: 1100px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h2 { margin-top: 0; color: #2c3e50; }
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #eee; }
+        .tab-btn { padding: 12px 25px; border: 1px solid #ccc; border-bottom: none; border-radius: 8px 8px 0 0; cursor: pointer; background: #f8f9fa; transition: 0.2s; font-size: 14px; }
+        .tab-btn.active { background: #fff; font-weight: bold; color: #28a745; border-top: 3px solid #28a745; margin-bottom: -2px; }
         .controls { display: flex; gap: 10px; margin-bottom: 20px; }
-        input { flex-grow: 1; padding: 12px; border: 1px solid #ccc; border-radius: 6px; }
-        button { padding: 10px 25px; cursor: pointer; background: #28a745; color: white; border: none; border-radius: 6px; font-weight: bold; }
-        #result { font-weight: bold; margin-bottom: 15px; padding: 10px; border-radius: 6px; background: #e9ecef; min-height: 20px; }
-        #graph { height: 600px; border: 1px solid #eee; border-radius: 8px; }
+        input { flex-grow: 1; padding: 12px; border: 2px solid #eee; border-radius: 8px; outline: none; transition: 0.3s; }
+        input:focus { border-color: #28a745; }
+        button.analyze-btn { padding: 10px 25px; cursor: pointer; background: #28a745; color: white; border: none; border-radius: 8px; font-weight: bold; }
+        button.analyze-btn:hover { background: #218838; }
+        #result { font-weight: bold; margin-bottom: 15px; padding: 15px; border-radius: 8px; background: #e9ecef; border-left: 5px solid #28a745; }
+        #graph { height: 600px; background: white; border-radius: 8px; }
     </style>
 </head>
 <body>
@@ -23,9 +27,16 @@
     <h2>🧬 Mor2</h2>
     <div id="result">Загрузка данных...</div>
 
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('nations')">🌍 Народы (1D)</button>
+        <button class="tab-btn" onclick="switchTab('groups')">📍 Популяции (2D)</button>
+    </div>
+
     <div class="controls">
-        <input type="text" id="userData" placeholder="Вставьте Eurogenes G25 (напр. AB123456_scaled,0.125,0.083...)">
-        <button onclick="addUserSample()">Анализировать</button>
+        <textarea id="userData"
+                  placeholder="Вставьте Eurogenes G25 (напр. AB123456_scaled,0.125,0.083...) - каждый с новой строки"
+                  style="flex-grow: 1; padding: 12px; border: 2px solid #eee; border-radius: 8px; height: 45px; resize: vertical;"></textarea>
+        <button class="analyze-btn" onclick="addUserSample()">Анализировать</button>
     </div>
 
     <div id="graph"></div>
